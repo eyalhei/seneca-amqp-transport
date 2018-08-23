@@ -35,28 +35,35 @@ describe('On client module', function() {
     seneca.close();
   });
 
+  let assertQueueSpy,
+    assertExchangeSpy,
+    consumeSpy,
+    publishSpy,
+    prefetchSpy,
+    onSpy;
+
   before(function() {
     // Set some fixed id on queue options so generated name won't be random
     // and different each time resolveClientQueue() is called
     DEFAULT_OPTIONS.client.queues.id = 'foo';
 
     // Create spies for channel methods
-    sinon.spy(channel, 'assertQueue');
-    sinon.spy(channel, 'assertExchange');
-    sinon.spy(channel, 'consume');
-    sinon.spy(channel, 'publish');
-    sinon.spy(channel, 'prefetch');
-    sinon.spy(channel, 'on');
+    assertQueueSpy = sinon.spy(channel, 'assertQueue');
+    assertExchangeSpy = sinon.spy(channel, 'assertExchange');
+    consumeSpy = sinon.spy(channel, 'consume');
+    publishSpy = sinon.spy(channel, 'publish');
+    prefetchSpy = sinon.spy(channel, 'prefetch');
+    onSpy = sinon.spy(channel, 'on');
   });
 
   afterEach(function() {
     // Reset the state of the stub functions
-    channel.assertQueue.reset();
-    channel.assertExchange.reset();
-    channel.consume.reset();
-    channel.publish.reset();
-    channel.prefetch.reset();
-    channel.on.reset();
+    assertQueueSpy.resetHistory();
+    assertExchangeSpy.resetHistory();
+    consumeSpy.resetHistory();
+    publishSpy.resetHistory();
+    prefetchSpy.resetHistory();
+    onSpy.resetHistory();
   });
 
   describe('the setup() function', function() {

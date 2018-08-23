@@ -32,18 +32,15 @@ describe('On dead-letter module', function() {
     bindQueue: () => Promise.resolve()
   };
 
-  before(function() {
-    // Create spies for channel methods
-    sinon.spy(channel, 'assertQueue');
-    sinon.spy(channel, 'assertExchange');
-    sinon.spy(channel, 'bindQueue');
-  });
+  const assertQueueSpy = sinon.spy(channel, 'assertQueue');
+  const assertExchangeSpy = sinon.spy(channel, 'assertExchange');
+  const bindQueueSpy = sinon.spy(channel, 'bindQueue');
 
   afterEach(function() {
     // Reset the state of the stub functions
-    channel.assertQueue.reset();
-    channel.assertExchange.reset();
-    channel.bindQueue.reset();
+    assertQueueSpy.resetHistory();
+    assertExchangeSpy.resetHistory();
+    bindQueueSpy.resetHistory();
   });
 
   describe('the declareDeadLetter() function', function() {

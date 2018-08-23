@@ -49,13 +49,10 @@ describe('On listener-factory module', function() {
   });
 
   describe('the Listener#listen() function', function() {
-    before(function() {
-      sinon.spy(channel, 'consume');
-    });
-
+    const consumeSpy = sinon.spy(channel, 'consume');
     afterEach(function() {
       // Reset the state of the spy functions
-      channel.consume.reset();
+      consumeSpy.resetHistory();
     });
 
     it('should return a Promise', function() {
@@ -107,12 +104,13 @@ describe('On listener-factory module', function() {
       options: DEFAULT_OPTIONS
     };
 
+    const consumeSpy = sinon.spy(channel, 'consume');
+    const sendToQueueSpy = sinon.spy(channel, 'sendToQueue');
+    const ackSpy = sinon.spy(channel, 'ack');
+
     before(function() {
       // Stub the `channel#consume()` method to make it call the message
       // handler function as if a new message had just arrived to the queue
-      sinon.spy(channel, 'consume');
-      sinon.spy(channel, 'sendToQueue');
-      sinon.spy(channel, 'ack');
 
       sinon
         .stub(seneca, 'export')
@@ -121,9 +119,9 @@ describe('On listener-factory module', function() {
     });
 
     afterEach(function() {
-      channel.consume.reset();
-      channel.sendToQueue.reset();
-      channel.ack.reset();
+      consumeSpy.resetHistory();
+      sendToQueueSpy.resetHistory();
+      ackSpy.resetHistory();
       transportUtils['handle_request'].restore();
     });
 

@@ -36,14 +36,10 @@ describe('On consumer module', function() {
       consume: () => Promise.resolve()
     };
 
-    before(function() {
-      // Create spies for channel methods
-      sinon.spy(channel, 'consume');
-    });
-
+    const consumeSpy = sinon.spy(channel, 'consume');
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.consume.reset();
+      consumeSpy.resetHistory();
     });
 
     it('should return a Promise', function() {

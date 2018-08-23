@@ -39,7 +39,7 @@ describe("A Seneca client with type:'amqp'", function() {
     // Connect to the broker, (re-)declare exchange and queue used in test
     // and remove any pre-existing messages from it
     return amqp
-      .connect(process.env.AMQP_UR)
+      .connect(process.env.AMQP_URL)
       .then(conn => conn.createChannel())
       .then(channel => {
         return channel

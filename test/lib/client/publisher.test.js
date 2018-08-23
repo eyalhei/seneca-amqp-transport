@@ -38,14 +38,11 @@ describe('On publisher module', function() {
       publish: () => Promise.resolve()
     };
 
-    before(function() {
-      // Create spies for channel methods
-      sinon.spy(channel, 'publish');
-    });
+    const publishSpy = sinon.spy(channel, 'publish');
 
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.publish.reset();
+      publishSpy.resetHistory();
     });
 
     const message = JSON.stringify({ foo: 'bar' });
@@ -125,14 +122,11 @@ describe('On publisher module', function() {
       consume: () => Promise.resolve()
     };
 
-    before(function() {
-      // Create spies for channel methods
-      sinon.spy(channel, 'consume');
-    });
+    const consumeSpy = sinon.spy(channel, 'consume');
 
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.consume.reset();
+      consumeSpy.resetHistory();
     });
 
     it('should return a Promise', function() {

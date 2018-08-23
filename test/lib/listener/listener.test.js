@@ -39,15 +39,14 @@ describe('On listener module', function() {
     options: DEFAULT_OPTIONS
   };
 
+  const assertQueueSpy = sinon.spy(channel, 'assertQueue');
+  const assertExchangeSpy = sinon.spy(channel, 'assertExchange');
+  const prefetchSpy = sinon.spy(channel, 'prefetch');
+  const bindQueueSpy = sinon.spy(channel, 'bindQueue');
+
   before(function() {
     // Add some `pin` to the options to be used in queue name creation
     DEFAULT_OPTIONS.pin = 'role:entity,cmd:create';
-
-    // Create spies for channel methods
-    sinon.spy(channel, 'assertQueue');
-    sinon.spy(channel, 'assertExchange');
-    sinon.spy(channel, 'prefetch');
-    sinon.spy(channel, 'bindQueue');
   });
 
   before(function(done) {
@@ -61,10 +60,10 @@ describe('On listener module', function() {
   describe('the setup() function', function() {
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.assertQueue.reset();
-      channel.assertExchange.reset();
-      channel.prefetch.reset();
-      channel.bindQueue.reset();
+      assertQueueSpy.resetHistory();
+      assertExchangeSpy.resetHistory();
+      prefetchSpy.resetHistory();
+      bindQueueSpy.resetHistory();
     });
 
     it('should return a Promise', function() {
