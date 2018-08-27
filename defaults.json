@@ -56,5 +56,46 @@
         }
       }
     }
+  },
+  "amqp-pubsub": {
+    "type": "amqp-pubsub",
+    "url": "amqp://localhost",
+    "exchange": {
+      "type": "topic",
+      "name": "seneca.pubsub.topic",
+      "options": {
+        "durable": true,
+        "autoDelete": false
+      }
+    },
+    "deadLetter": {
+      "queue": {
+        "name": "seneca.pubsub.dlq"
+      },
+      "exchange": {
+        "type": "topic",
+        "name": "seneca.pubsub.dlx",
+        "options": {
+          "durable": true,
+          "autoDelete": false
+        }
+      }
+    },
+    "subscriber": {
+      "channel": {
+        "prefetch": 1
+      },
+      "queues": {
+        "prefix": "seneca.sub",
+        "separator": ".",
+        "options": {
+          "durable": true,
+          "arguments": {
+            "x-dead-letter-exchange": "seneca.pubsub.dlx",
+            "x-message-ttl": 60000
+          }
+        }
+      }
+    }
   }
 }
